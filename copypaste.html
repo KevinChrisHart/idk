@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine 💖</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Comic Sans MS", cursive;
+    }
+
+    body {
+      height: 100vh;
+      background: #ffd6e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      padding: 60px;
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      width: 600px;
+      max-width: 90vw;
+    }
+
+    h1, h2 {
+      color: #ff1a75;
+      margin-bottom: 25px;
+    }
+ 	#valentine h2 {
+  	font-size: 50px;
+	}
+
+
+    button {
+      padding: 15px 35px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background: #ff4d88;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Valentine buttons */
+    .buttons {
+  position: relative;
+  height: 260px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px; /* space between YES and NO */
+}
+
+
+
+    #yes {
+      padding: 15px 45px;
+      font-size: 22px;
+      border-radius: 30px;
+      background: #ff1a75;
+      transition: transform 0.3s;
+    }
+
+  #no {
+  position: absolute;
+  padding: 15px 40px;
+  font-size: 20px;
+  border-radius: 30px;
+  background: #999;
+
+  /* 👇 THIS IS THE KEY PART */
+  left: 50%;
+  bottom: 30px;           /* always below YES */
+  transform: translateX(-50%);
+}
+
+
+
+    .success {
+      font-size: 50px;
+      color: #ff1a75;
+    }
+
+    /* HEARTS */
+    .heart {
+      position: absolute;
+      pointer-events: none;
+      animation: floatUp 4s linear infinite;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PAGE 1: INVITATION -->
+  <div class="screen active" id="invite">
+    <div class="card">
+      <h1>MY LOVE MY BABY MY EVERYTHING 💕</h1>
+      <button onclick="goToApology()">Open the letter AHHHHHHHHHHH 💌</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: APOLOGY -->
+  <div class="screen" id="apology">
+    <div class="card">
+      <h2>Darling I am so so so sorry I'm asking you so late<br>I love you so much 💖<br>IRIS You are my everything<br> You dont know how much u mean to me <br>Thanks for being the bestest most understanding most caring person in this world <br> I love you sososososososo much </h2>
+      <button onclick="goToValentine()">now to answer the big question</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: VALENTINE QUESTION -->
+  <div class="screen" id="valentine">
+    <div class="card">
+      <h2>Will you be my Valentine? AHHHHHHHHHHHH 💘</h2>
+
+      <div class="buttons">
+        <button id="yes" onclick="yesClicked()">YES 💖</button>
+        <button id="no" onmouseover="moveNo()">NO 😒</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="screen" id="success">
+    <div class="success">
+      <center>MUWHA I LOVE YOU SO FRIKING MUCH <br> MUWHAAAAA  💕💞💖
+    </div>
+  </div>
+
+  <script>
+    let yesSize = 1;
+    let heartsStarted = false;
+
+    function goToApology() {
+      invite.classList.remove("active");
+      apology.classList.add("active");
+      if (!heartsStarted) {
+        startHearts();
+        heartsStarted = true;
+      }
+    }
+
+    function goToValentine() {
+      apology.classList.remove("active");
+      valentine.classList.add("active");
+    }
+
+    function moveNo() {
+  const container = document.querySelector(".buttons");
+
+  const maxX = container.clientWidth / 2 - no.offsetWidth;
+  const maxY = container.clientHeight / 2 - no.offsetHeight;
+
+  const x = Math.random() * maxX * 2 - maxX;
+  const y = Math.random() * maxY * 2 - maxY;
+
+  no.style.transform = `translate(${x}px, ${y}px)`;
+
+  // YES grows but stays reasonable
+  yesSize = Math.min(yesSize + 0.25, 2.5);
+  yes.style.transform = `scale(${yesSize})`;
+}
+
+
+    function yesClicked() {
+      valentine.classList.remove("active");
+      success.classList.add("active");
+      heartExplosion();
+    }
+
+    /* 💖 LOTS AND LOTS OF HEARTS */
+    function startHearts() {
+      setInterval(() => {
+        for (let i = 0; i < 6; i++) {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.innerHTML = "💖";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.fontSize = Math.random() * 30 + 15 + "px";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 4000);
+        }
+      }, 150);
+    }
+
+    function heartExplosion() {
+      for (let i = 0; i < 120; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = Math.random() * 100 + "vh";
+        heart.style.fontSize = Math.random() * 35 + 15 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+  </script>
+
+</body>
+</html>
